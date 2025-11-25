@@ -17,6 +17,7 @@ Item	Check
 - Certificates	Expired certs must be renewed before upgrade
 - Backups	Take VCSA snapshot + image-level backup (Veeam if applicable)
 
+```
 > CLI Resource Check
 
 > df -h
@@ -26,6 +27,7 @@ Item	Check
 > du -sh /storage/log
 
 > free -m
+```
 
 🛠️ COMMON UPGRADE FAILURES & FIXES
 🚨 1. Pre-Upgrade Check Fails in Stage 2
