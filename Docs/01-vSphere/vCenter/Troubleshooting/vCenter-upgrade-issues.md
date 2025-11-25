@@ -9,17 +9,22 @@ Perform before any upgrade attempt:
 
 1. Compatibility & Requirements
 Item	Check
-vSphere Compatibility	Verify ESXi hosts HCL vs target vCenter
-Hardware resources	+2 vCPU & +6–8 GB RAM may be needed depending on scale
-Storage	Minimum 20 GB free on /storage/core and /storage/log
-DNS	Forward and Reverse must resolve
-Certificates	Expired certs must be renewed before upgrade
-Backups	Take VCSA snapshot + image-level backup (Veeam if applicable)
+
+- vSphere Compatibility	Verify ESXi hosts HCL vs target vCenter
+- Hardware resources	+2 vCPU & +6–8 GB RAM may be needed depending on scale
+- Storage	Minimum 20 GB free on /storage/core and /storage/log
+- DNS	Forward and Reverse must resolve
+- Certificates	Expired certs must be renewed before upgrade
+- Backups	Take VCSA snapshot + image-level backup (Veeam if applicable)
 
 > CLI Resource Check
+
 > df -h
+
 > du -sh /storage/core
+
 > du -sh /storage/log
+
 > free -m
 
 🛠️ COMMON UPGRADE FAILURES & FIXES
