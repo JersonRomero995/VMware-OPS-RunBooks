@@ -252,8 +252,8 @@ flowchart TB
     end
     
     subgraph Storage["Enterprise Storage Fabric"]
-        FCSAN[(FC SANTier 0/1)]
-        NFS[(NFS StorageTier 2)]
+        SAN[(SAN)]
+        NFS[(NFS Storage)]
         vSAN[(vSAN Ready Nodes)]
     end
     
@@ -299,15 +299,95 @@ flowchart TB
 • VM-VM and VM-Host affinity/anti-affinity rules
 
 # 5 Topology 5: Multi-Site with Disaster Recovery
-5.1 Description
+# 5.1 Description
 Geographically distributed infrastructure with automated failover capabilities between sites using Site Recovery Manager (SRM).
-5.2 Components
+# 5.2 Components
 • 2+ Data Centers (Primary + DR site)
+
 • Multiple clusters per site
+
 • vCenter Server with Enhanced Linked Mode or vCenter HA
+
 • Site Recovery Manager (SRM)
+
 • vSphere Replication or array-based replication
-5.3 Architecture
+
+# 5.3 Architecture
+```mermaid
+flowchart TB
+    subgraph Primary["Primary Data Center"]
+        direction TB
+        
+        subgraph PrimaryMgmt["Management"]
+            vCenter1[vCenter Primary]
+            SRM1[Site Recovery Manager]
+        end
+        
+        subgraph PrimaryCluster["Production Cluster - Primary"]
+            direction LR
+            P_ESXi1[ESXi-1]
+            P_ESXi2[ESXi-2]
+            P_ESXi3[ESXi-3]
+        end
+        
+        PrimaryStorage[(Primary StorageSAN/vSANProtection Groups)]
+        
+        vCenter1 --> PrimaryCluster
+        SRM1 -.-> vCenter1
+        PrimaryCluster --> PrimaryStorage
+    end
+    
+    Replication[("🔄 Replication───────────vSphere ReplicationorArray-Based───────────RPO: 5-15 min")]
+    
+    subgraph Secondary["DR / Secondary Data Center"]
+        direction TB
+        
+        RecoveryStorage[(Recovery StorageSAN/vSANRecovery Plans Ready)]
+        
+        subgraph RecoveryCluster["Production Cluster - Recovery"]
+            direction LR
+            R_ESXi4[ESXi-4]
+            R_ESXi5[ESXi-5]
+            R_ESXi6[ESXi-6]
+        end
+        
+        subgraph RecoveryMgmt["Management"]
+            vCenter2[vCenter Recovery]
+            SRM2[Site Recovery Manager]
+        end
+        
+        RecoveryStorage --> RecoveryCluster
+        vCenter2 --> RecoveryCluster
+        SRM2 -.-> vCenter2
+    end
+    
+    NetworkExtension["🌐 Network ExtensionNSX / L2 StretchCross-site vMotion"]
+    
+    PrimaryStorage ==> Replication
+    Replication ==> RecoveryStorage
+    
+    SRM1  SRM2
+    vCenter1  vCenter2
+    
+    Primary -.-> NetworkExtension
+    Secondary -.-> NetworkExtension
+    
+    Objectives["📊 Recovery ObjectivesRTO: 1-4 hoursRPO: 5-15 minutes"]
+    
+    Replication -.-> Objectives
+    
+    style Primary fill:#E8F4F8
+    style Secondary fill:#FFF4E6
+    style vCenter1 fill:#F5A623
+    style vCenter2 fill:#F5A623
+    style SRM1 fill:#FF6B6B
+    style SRM2 fill:#FF6B6B
+    style PrimaryStorage fill:#7ED321
+    style RecoveryStorage fill:#7ED321
+    style Replication fill:#BD10E0
+    style NetworkExtension fill:#50E3C2
+    style Objectives fill:#FFE66D
+```
 
 
 
