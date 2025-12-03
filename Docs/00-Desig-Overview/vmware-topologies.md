@@ -209,6 +209,7 @@ Large-scale production environment with fully automated DRS, advanced HA, and mu
 • vRealize Operations (optional), NSX (optional)
 
 ## 4.3 Architecture
+
 ```mermaid
 flowchart TB
     subgraph Management["Management Layer"]
@@ -288,7 +289,7 @@ flowchart TB
     style NFS fill:#7ED321
     style vSAN fill:#50E3C2
     style Features fill:#FFE66D
-    ```
+```
 
 ## 4.4 DRS Configuration
 • Automation level: Fully automated
@@ -307,5 +308,6 @@ Geographically distributed infrastructure with automated failover capabilities b
 • Site Recovery Manager (SRM)
 • vSphere Replication or array-based replication
 5.3 Architecture
+
 
 
