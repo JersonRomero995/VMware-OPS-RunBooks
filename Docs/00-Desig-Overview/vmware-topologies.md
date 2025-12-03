@@ -6,8 +6,11 @@ development, testing, or small labs.
 
 ## 1.2 Components
 • 1× ESXi Host
+
 • 1× vCenter Server Appliance (VCSA) – optional, can run as VM on the host
+
 • Local or DAS (Direct Attached Storage)
+
 • Standard vSwitch for networking
 
 ## 1.3 Architecture
@@ -330,19 +333,19 @@ flowchart TB
             P_ESXi3[ESXi-3]
         end
         
-        PrimaryStorage[(Primary StorageSAN/vSANProtection Groups)]
+        PrimaryStorage[(Primary Storage<br/>SAN/vSAN<br/>Protection Groups)]
         
-        vCenter1 --> PrimaryCluster
-        SRM1 -.-> vCenter1
-        PrimaryCluster --> PrimaryStorage
+        vCenter1-->PrimaryCluster
+        SRM1-.->vCenter1
+        PrimaryCluster-->PrimaryStorage
     end
     
-    Replication[("🔄 Replication───────────vSphere ReplicationorArray-Based───────────RPO: 5-15 min")]
+    Replication[("Replication<br/>vSphere Replication<br/>or Array-Based<br/>RPO: 5-15 min")]
     
-    subgraph Secondary["DR / Secondary Data Center"]
+    subgraph Secondary["DR Secondary Data Center"]
         direction TB
         
-        RecoveryStorage[(Recovery StorageSAN/vSANRecovery Plans Ready)]
+        RecoveryStorage[(Recovery Storage<br/>SAN/vSAN<br/>Recovery Plans Ready)]
         
         subgraph RecoveryCluster["Production Cluster - Recovery"]
             direction LR
@@ -356,25 +359,26 @@ flowchart TB
             SRM2[Site Recovery Manager]
         end
         
-        RecoveryStorage --> RecoveryCluster
-        vCenter2 --> RecoveryCluster
-        SRM2 -.-> vCenter2
+        RecoveryStorage-->RecoveryCluster
+        vCenter2-->RecoveryCluster
+        SRM2-.->vCenter2
     end
     
-    NetworkExtension["🌐 Network ExtensionNSX / L2 StretchCross-site vMotion"]
+    NetworkExtension["Network Extension<br/>NSX or L2 Stretch<br/>Cross-site vMotion"]
+    LinkedMode["Enhanced Linked Mode"]
+    Objectives["Recovery Objectives<br/>RTO: 1-4 hours<br/>RPO: 5-15 minutes"]
     
-    PrimaryStorage ==> Replication
-    Replication ==> RecoveryStorage
+    PrimaryStorage==>Replication
+    Replication==>RecoveryStorage
     
-    SRM1  SRM2
-    vCenter1  vCenter2
+    SRM1<-->SRM2
+    vCenter1-.->LinkedMode
+    LinkedMode-.->vCenter2
     
-    Primary -.-> NetworkExtension
-    Secondary -.-> NetworkExtension
+    Primary-.->NetworkExtension
+    Secondary-.->NetworkExtension
     
-    Objectives["📊 Recovery ObjectivesRTO: 1-4 hoursRPO: 5-15 minutes"]
-    
-    Replication -.-> Objectives
+    Replication-.->Objectives
     
     style Primary fill:#E8F4F8
     style Secondary fill:#FFF4E6
@@ -387,7 +391,11 @@ flowchart TB
     style Replication fill:#BD10E0
     style NetworkExtension fill:#50E3C2
     style Objectives fill:#FFE66D
+    style LinkedMode fill:#D3D3D3
 ```
+## 5.4 Recovery Objectives
+• RTO (Recovery Time Objective): 1–4 hours (automated failover)
 
+• RPO (Recovery Point Objective): 5–15 minutes (vSphere Replication)
 
-
+• RPO: < 5 minutes (array-based replication)
