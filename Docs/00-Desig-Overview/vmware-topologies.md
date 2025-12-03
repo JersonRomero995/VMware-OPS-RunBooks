@@ -1,5 +1,17 @@
 # Topology 1: Single Host (Basic)
 
+## 1.1 Description
+Simplest VMware setup with a single ESXi host managed by vCenter (optional). Suitable for
+development, testing, or small labs.
+
+## 1.2 Components
+• 1× ESXi Host
+• 1× vCenter Server Appliance (VCSA) – optional, can run as VM on the host
+• Local or DAS (Direct Attached Storage)
+• Standard vSwitch for networking
+
+## 1.3 Architecture
+
 ```mermaid
 flowchart TB
     subgraph "Single ESXi Host"
@@ -27,4 +39,12 @@ flowchart TB
     style ESXi fill:#4A90E2
     style vCSA fill:#F5A623
     style LocalStorage fill:#7ED321
-  
+```
+
+## 1.4 Limitations
+× No high availability
+× Single point of failure
+× Limited scalability
+× No vMotion capability (requires shared storage)
+
+
