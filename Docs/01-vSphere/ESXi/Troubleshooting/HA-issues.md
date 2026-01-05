@@ -241,3 +241,8 @@ Monitor storage latency (DAVG < 20ms)
 Avoid oversized VM reservations
 
 Keep ESXi versions consistent in cluster
+
+## Knowledge base
+Reference link
+https://knowledge.broadcom.com/external/article/318936/troubleshooting-vmware-high-availability.html
+
