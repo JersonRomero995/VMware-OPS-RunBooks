@@ -6,6 +6,7 @@ for VMware technologies, including:
 - vSphere (ESXi, vCenter, storage, networking)
 - NSX-T
 - Aria Operations & Automation
+- VCF
 - Python / PowerShell Automation
 
 The purpose of this repo is to:
