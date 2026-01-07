@@ -240,7 +240,7 @@ https://knowledge.broadcom.com/external/article?legacyId=2051814 --> packet capt
 Some captures example:
 ```
 pktcap-uw --uplink vmnicX --capture UplinkSndKernel,UplinkRcvKernel -s 160 --mac <mac> -0 - | tcpdump-uw -enr -
-
+```
 vDS (using port ID):
 
 vsish -e get /net/portsets/<switch>/ports/<portID>/stats
